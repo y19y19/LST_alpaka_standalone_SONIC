@@ -44,6 +44,7 @@ namespace lst {
 
 }  // namespace lst
 
+#ifndef __NVCC__
 namespace cms::alpakatools {
 
   template <>
@@ -75,5 +76,6 @@ namespace cms::alpakatools {
     }
   };
 }  // namespace cms::alpakatools
+#endif  // __NVCC__
 
 #endif

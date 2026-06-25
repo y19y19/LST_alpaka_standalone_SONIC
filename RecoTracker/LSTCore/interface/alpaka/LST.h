@@ -2,7 +2,7 @@
 #define RecoTracker_LSTCore_interface_alpaka_LST_h
 
 #include "RecoTracker/LSTCore/interface/alpaka/Common.h"
-#include "RecoTracker/LSTCore/interface/LSTESData.h"
+#include "../LSTESData.h" // YY: maybe can be changed back? 
 #include "RecoTracker/LSTCore/interface/alpaka/LSTInputDeviceCollection.h"
 #include "RecoTracker/LSTCore/interface/alpaka/TrackCandidatesDeviceCollection.h"
 #include "RecoTracker/LSTCore/interface/TrackCandidatesHostCollection.h"
@@ -34,9 +34,11 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::lst {
              bool no_pls_dupclean,
              bool tc_pls_triplets);
 
+#ifndef __NVCC__
     std::unique_ptr<TrackCandidatesBaseDeviceCollection> getTrackCandidates() {
       return std::move(trackCandidatesBaseDC_);
     }
+#endif
 
     void run_SONIC(bool verbose,
                    std::map<std::string, const void*> inputs_name_buffer,
@@ -55,12 +57,21 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::lst {
     size_t getOutputBufferSize_hitIndices_flat() const { return output_hitIndices_flat_.size() * sizeof(unsigned int); }
 
   private:
+#ifndef __NVCC__
+    // Full type used by g++-compiled code (LSTRunnerCPU.cc, liblst_cuda.so).
     std::unique_ptr<TrackCandidatesBaseDeviceCollection> trackCandidatesBaseDC_;
+#else
+    // ABI-compatible placeholder for nvcc: sizeof(unique_ptr<T>) == sizeof(void*).
+    // run_SONIC() in liblst_cuda.so always moves trackCandidatesBaseDC_ into a local
+    // before returning, so this slot is null when our nvcc destructor runs — no leak.
+    alignas(alignof(void*)) unsigned char trackCandidatesBaseDC_[sizeof(void*)];
+#endif
     unsigned int output_nTrackCandidates_ = 0;
     std::vector<unsigned int> output_pixelSeedIndex_;
     std::vector<int8_t> output_trackCandidateType_;
     std::vector<unsigned int> output_hitIndices_flat_;
-    // Raw pointer to PIMPL struct; sized as a single pointer in all views.
+    // Raw pointer to PIMPL struct; sizeof(void*) in all compiler views — safe with
+    // the __NVCC__ placeholder pattern above (no constraint-template instantiation).
     LSTRunCache* runCache_ = nullptr;
   };
 
