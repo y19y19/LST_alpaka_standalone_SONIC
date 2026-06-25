@@ -12,7 +12,7 @@ Inference as-a-Service (SONIC).
 
 ## Build `lst_cuda.so` and `lst_cpu.so`
 
-> Run these steps on a machine with access to `/cvmfs/`.
+Run these steps on a machine with access to `/cvmfs/`.
 
 ```bash
 git clone -b CMSSW_16_1_0_pre4 https://github.com/y19y19/LST_alpaka_standalone_SONIC.git
