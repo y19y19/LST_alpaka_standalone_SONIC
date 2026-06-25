@@ -10,7 +10,26 @@ Inference as-a-Service (SONIC).
 
 ---
 
-## Setup Procedure
+## Build `lst_cuda.so` and `lst_cpu.so`
+
+> Run these steps on a machine with access to `/cvmfs/`.
+
+```bash
+git clone -b CMSSW_16_1_0_pre4 https://github.com/y19y19/LST_alpaka_standalone_SONIC.git
+cd LST_alpaka_standalone_SONIC/RecoTracker/LSTCore/standalone/
+source setup.sh CMSSW_16_1_0_pre4 el8_amd64_gcc13
+lst_make_tracklooper -m
+```
+
+The compiled libraries `lst_cuda.so` and `lst_cpu.so` will be located at:
+
+```
+RecoTracker/LSTCore/standalone/LST/
+```
+
+---
+
+## Set Up This Repo from CMSSW
 
 ### 1. Set the CMSSW tag
 
@@ -33,7 +52,7 @@ git checkout
 ### 3. Add your fork as a remote
 
 ```bash
-git remote add myfork git@github.com:y19y19/LST_standalone_SONIC.git
+git remote add myfork git@github.com:y19y19/LST_alpaka_standalone_SONIC.git
 ```
 
 ### 4. Create an orphan branch with clean history
@@ -56,14 +75,4 @@ git commit -m "Base: CMSSW_16_1_0_pre4 RecoTracker/LSTCore (no history)"
 git push myfork refs/heads/${CMSSW_TAG}:refs/heads/${CMSSW_TAG}
 ```
 
-### 7. Clean up the local tag
-
-```bash
-git tag -d CMSSW_16_1_0_pre4
-```
-
-### 8. Set upstream for future pushes
-
-```bash
-git push --set-upstream myfork CMSSW_16_1_0_pre4
-```
+For future development, git clone the branch from `myfork`.
