@@ -7,15 +7,17 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $DIR/code/rooutil/thisrooutil.sh
 
 ARCH=$(uname -m)
+export SCRAM_ARCH=$2 #el8_amd64_gcc13 # for dedicated machine and version
 if [ -z ${CMSSW_SEARCH_PATH+x} ]; then
   if [ -z ${FORCED_CMSSW_VERSION+x} ]; then
-    export CMSSW_VERSION=CMSSW_14_2_0_pre4
+    export CMSSW_VERSION=$1 # CMSSW_16_1_0_pre4
   else
     export CMSSW_VERSION=$FORCED_CMSSW_VERSION
   fi
 
   source /cvmfs/cms.cern.ch/cmsset_default.sh
   CMSSW_PATH=$(scram list -c CMSSW | grep -w $CMSSW_VERSION | awk '{print $3}')
+  echo $CMSSW_PATH
   cd $CMSSW_PATH
   eval `scramv1 runtime -sh`
 else
@@ -29,6 +31,14 @@ export CUDA_HOME=$(scram tool info cuda | grep CUDA_BASE | cut -d'=' -f2)
 export FMT_ROOT=$(scram tool info fmt | grep FMT_BASE | cut -d'=' -f2)
 export ROCM_ROOT=$(scram tool info rocm | grep ROCM_BASE | cut -d'=' -f2)
 export ROOT_ROOT=$(scram tool info root_interface | grep ROOT_INTERFACE_BASE | cut -d'=' -f2)
+export JSON_ROOT=$(scram tool info json | grep JSON_BASE | cut -d'=' -f2)
+echo "ALPAKA_ROOT=${ALPAKA_ROOT}" 
+echo "BOOST_ROOT=${BOOST_ROOT}"
+echo "CUDA_HOME=${CUDA_HOME}"
+echo "FMT_ROOT=${FMT_ROOT}"
+echo "ROCM_ROOT=${ROCM_ROOT}" 
+echo "ROOT_ROOT=${ROOT_ROOT}"
+echo "JSON_ROOT=${JSON_ROOT}"
 
 cd - > /dev/null
 echo "Setup following ROOT. Make sure the appropriate setup file has been run. Otherwise the looper won't compile."
@@ -40,7 +50,8 @@ export PATH=$DIR/bin:$PATH
 export PATH=$DIR/efficiency/bin:$PATH
 export PATH=$DIR/efficiency/python:$PATH
 export TRACKLOOPERDIR=$DIR
-export TRACKINGNTUPLEDIR=/data2/segmentlinking/CMSSW_12_2_0_pre2/
+#export TRACKINGNTUPLEDIR=/data2/segmentlinking/CMSSW_12_2_0_pre2/
+export TRACKINGNTUPLEDIR=/depot/cms/users/yao317/datasets/
 export LSTOUTPUTDIR=.
 
 hostname=$(hostname)
