@@ -29,59 +29,17 @@ RecoTracker/LSTCore/standalone/LST/
 
 ---
 
-## Set Up This Repo from CMSSW
+## This Branch
 
-### 1. Set the CMSSW tag
+This branch contains changes to make the **LST Alpaka Triton backend compile successfully**.
 
-```bash
-export CMSSW_TAG=CMSSW_16_1_0_pre4
+To use it:
+
+1. Copy the code from this branch into your backend's area.
+
+2. Copy `lst_cuda.so` and `lst_cpu.so` — compiled from the `CMSSW_16_1_0_pre4` branch
+   (see **Build** section above) — into the corresponding location:
+
 ```
-
-### 2. Clone with sparse checkout (LSTCore only)
-
-```bash
-git clone --filter=blob:none --no-checkout --depth 1 --sparse \
-  --branch ${CMSSW_TAG} \
-  https://github.com/cms-sw/cmssw.git cmssw
-cd cmssw
-
-git sparse-checkout set RecoTracker/LSTCore
-git checkout
+RecoTracker/LSTCore/standalone/LST/
 ```
-
-### 3. Fix `.gitignore`
-
-Open `RecoTracker/LSTCore/standalone/.gitignore` and remove the `performance*` line:
-
-```bash
-vi RecoTracker/LSTCore/standalone/.gitignore
-# remove: performance*
-```
-
-### 4. Add your fork as a remote
-
-```bash
-git remote add myfork git@github.com:y19y19/LST_alpaka_standalone_SONIC.git
-```
-
-### 5. Create an orphan branch with clean history
-
-```bash
-git checkout --orphan ${CMSSW_TAG}
-```
-
-### 6. Stage only LSTCore and make the base commit
-
-```bash
-git reset HEAD -- .
-git add RecoTracker/LSTCore/
-git commit -m "Base: CMSSW_16_1_0_pre4 RecoTracker/LSTCore (no history)"
-```
-
-### 7. Push to your fork
-
-```bash
-git push myfork refs/heads/${CMSSW_TAG}:refs/heads/${CMSSW_TAG}
-```
-
-For future development, git clone the branch from `myfork`.
