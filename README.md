@@ -49,19 +49,28 @@ git sparse-checkout set RecoTracker/LSTCore
 git checkout
 ```
 
-### 3. Add your fork as a remote
+### 3. Fix `.gitignore`
+
+Open `RecoTracker/LSTCore/standalone/.gitignore` and remove the `performance*` line:
+
+```bash
+vi RecoTracker/LSTCore/standalone/.gitignore
+# remove: performance*
+```
+
+### 4. Add your fork as a remote
 
 ```bash
 git remote add myfork git@github.com:y19y19/LST_alpaka_standalone_SONIC.git
 ```
 
-### 4. Create an orphan branch with clean history
+### 5. Create an orphan branch with clean history
 
 ```bash
 git checkout --orphan ${CMSSW_TAG}
 ```
 
-### 5. Stage only LSTCore and make the base commit
+### 6. Stage only LSTCore and make the base commit
 
 ```bash
 git reset HEAD -- .
@@ -69,7 +78,7 @@ git add RecoTracker/LSTCore/
 git commit -m "Base: CMSSW_16_1_0_pre4 RecoTracker/LSTCore (no history)"
 ```
 
-### 6. Push to your fork
+### 7. Push to your fork
 
 ```bash
 git push myfork refs/heads/${CMSSW_TAG}:refs/heads/${CMSSW_TAG}
