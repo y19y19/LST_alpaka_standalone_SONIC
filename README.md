@@ -15,8 +15,8 @@ Inference as-a-Service (SONIC).
 Run these steps on a machine with access to `/cvmfs/`.
 
 ```bash
-git clone -b CMSSW_16_1_0_pre4 https://github.com/y19y19/LST_alpaka_standalone_SONIC.git
-cd LST_alpaka_standalone_SONIC/RecoTracker/LSTCore/standalone/
+git clone -b CMSSW_16_1_0_pre4 https://github.com/y19y19/LST_alpaka_standalone_SONIC.git lst_standalone
+cd lst_standalone/RecoTracker/LSTCore/standalone/
 source setup.sh CMSSW_16_1_0_pre4 el8_amd64_gcc13
 lst_make_tracklooper -m
 ```
