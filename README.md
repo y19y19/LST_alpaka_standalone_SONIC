@@ -12,7 +12,7 @@ Inference as-a-Service (SONIC).
 
 ## Build `lst_cuda.so` and `lst_cpu.so`
 
-Get the container for building backend and building LST standlone. If you already have the container, skip this step. 
+Get the container for building backend and building LST standalone. If you already have the container, skip this step. 
 
 ```bash
 singularity pull --disable-cache docker://y19y19/tritonserver_builder_gcc13:v4
