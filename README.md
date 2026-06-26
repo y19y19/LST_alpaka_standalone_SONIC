@@ -12,11 +12,23 @@ Inference as-a-Service (SONIC).
 
 ## Build `lst_cuda.so` and `lst_cpu.so`
 
-Run these steps on a machine with access to `/cvmfs/`.
+Get the container for building backend and building LST standlone. If you already have the container, skip this step. 
+
+```bash
+singularity pull --disable-cache docker://y19y19/tritonserver_builder_gcc13:v4
+```
+
+Clone the repo
 
 ```bash
 git clone -b CMSSW_16_1_0_pre4 https://github.com/y19y19/LST_alpaka_standalone_SONIC.git
-cd LST_alpaka_standalone_SONIC/RecoTracker/LSTCore/standalone/
+```
+
+Operate within the container
+
+```bash
+singularity run --nv -e --no-home -B <path_to>/LST_alpaka_standalone_SONIC:/workspace/LST_alpaka_standalone_SONIC/ -B /cvmfs/:/cvmfs/ <path_to>/tritonserver_builder_gcc13_v4.sif
+cd /workspace/LST_alpaka_standalone_SONIC/RecoTracker/LSTCore/standalone
 source setup.sh CMSSW_16_1_0_pre4 el8_amd64_gcc13
 lst_make_tracklooper -m
 ```
